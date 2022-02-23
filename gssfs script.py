@@ -2,6 +2,8 @@ import datetime, pandas as pd, numpy as np, re, itertools, threading, time, sys
 from datetime import date, timedelta
 
 done = 'False'
+fail = 'False'
+startTime = time.time()
 
 # Method to validate postcodes
 def validate_postcode(pc):
@@ -25,12 +27,18 @@ def animate():
         if done == 'True':
             # Ends script when done == 'True' 
             break
-        sys.stdout.write('\r' + str("Running script please wait") + c) 
+        executionTime = (time.time() - startTime)
+        executionTime = round(executionTime, 1)
+        sys.stdout.write('\r' + str("Script running! ") + str('Current runtime: ') + str(executionTime) + str('s ') + c) 
         sys.stdout.flush()
         time.sleep(0.15)
         # Time taken between animation cycles is 0.15 seconds
-    sys.stdout.write('\rDone! Script Finished Successfully!                         ')
-    time.sleep(1)
+    if fail == 'False':
+        sys.stdout.write('\rDone! Script Finished Successfully! ' + str('Runtime: ') + str(executionTime) + str("s"))
+        time.sleep(1)
+    if fail == 'True':
+        sys.stdout.write('\rFailed! Script Finished Successfully! ' + str('Runtime: ') + str(executionTime) + str("s"))
+        time.sleep(1)
     # Once script is finished will print the above message
 
 t = threading.Thread(target=animate)
