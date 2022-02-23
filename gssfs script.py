@@ -133,18 +133,35 @@ Eng_schools_not_recruited = Eng_schools_not_recruited.drop_duplicates(subset=['P
 Eng_school_list = Eng_school_list.dropna(subset=['Postcode'])
 
 # Scotland recruited 
-fields = ["School Name", "Post Code", "Phase of education", "Email", "Phone Number", "Website Address", "Primary Department", "Secondary Department"]
-Scot_school_list = pd.read_excel("C:/script/Scot_Schools.xlsx", 'Open Schools', usecols=fields)
-Scot_school_list['Postcode'] = Scot_school_list['Post code'].str.replace(' ','')
-Scot_school_list = Scot_school_list.drop(columns=['Post code'])
+fields = ["School Name", "Post Code", "Email", "Phone Number", "Website Address", "Primary Department", "Secondary Department"]
+Scot_school_list = pd.read_excel("C:/script/Scot_Schools.xlsx", 'Open Schools', usecols=fields, skiprows= 5)
+Scot_school_list['Postcode'] = Scot_school_list['Post Code'].str.replace(' ','')
+Scot_school_list = Scot_school_list.drop(columns=['Post Code'])
 Scot_schools_not_recruited = Scot_school_list 
 Scot_schools_not_recruited = pd.concat([Scot_schools_not_recruited,Recruited], join='outer')
 Scot_schools_not_recruited = pd.concat([Scot_schools_not_recruited,Recruited], join='outer')
 Scot_schools_not_recruited = Scot_schools_not_recruited.drop_duplicates(subset=['Postcode'], keep=False)
 Scot_school_list = Scot_school_list.dropna(subset=['Postcode'])
 
+# Wales recruited
+fields = ["School Name", "Postcode", "Phone Number"]
+Wales_school_list = pd.read_excel("C:/script/Wales_Schools.xlsx", usecols=fields, converters={'Phone Number':str})
+Wales_school_list['Postcode'] = Wales_school_list['Postcode'].str.replace(' ','')
+Wales_schools_not_recruited = Wales_school_list 
+Wales_schools_not_recruited = pd.concat([Wales_schools_not_recruited,Recruited], join='outer')
+Wales_schools_not_recruited = pd.concat([Wales_schools_not_recruited,Recruited], join='outer')
+Wales_schools_not_recruited = Wales_schools_not_recruited.drop_duplicates(subset=['Postcode'], keep=False)
+Wales_school_list = Wales_school_list.dropna(subset=['Postcode'])
 
-
+#NI Recruited
+fields = ["Institution_Name", "Postcode", "Telephone", "Email", "Institution_Type"]
+NI_school_list = pd.read_excel("C:/script/NI_Schools.xlsx", usecols=fields, converters={'Telephone':str})
+NI_school_list['Postcode'] = NI_school_list['Postcode'].str.replace(' ','')
+NI_schools_not_recruited = NI_school_list 
+NI_schools_not_recruited = pd.concat([NI_schools_not_recruited,Recruited], join='outer')
+NI_schools_not_recruited = pd.concat([NI_schools_not_recruited,Recruited], join='outer')
+NI_schools_not_recruited = NI_schools_not_recruited.drop_duplicates(subset=['Postcode'], keep=False)
+NI_school_list = NI_school_list.dropna(subset=['Postcode'])
 
 
 column_names = ["First Name", "Last Name", "Email", "Date", "Time", "Recruitment method", "Previous participant", "Students", "cum sum", "Organisation", "Postcode", "Region", "LA", "GSSfS newsletter", "SEERIH newsletter", "Deprivation rating", 'MPM distribution', "Education rating", "IDACI", "IDACI %", "lsoa", "ladcd"]
@@ -155,6 +172,12 @@ df.fillna(str("NA"))
 df.to_excel("C:/script/output.xlsx", sheet_name='Memberspace', index=False)   
 with pd.ExcelWriter("C:/script/output.xlsx",engine="openpyxl", mode='a') as writer:
     target.to_excel(writer, sheet_name='Target Signups', index=False)
-    Student_count.to_excel(writer, sheet_name='Student Count', index=False)
+    Student_count.to_excel(writer, sheet_name='Student Count')
     Eng_school_list.to_excel(writer, sheet_name='Eng List', index=False)
     Eng_schools_not_recruited.to_excel(writer, sheet_name='Eng Not recruited', index=False)
+    Scot_school_list.to_excel(writer, sheet_name='Scot List', index=False)
+    Scot_schools_not_recruited.to_excel(writer, sheet_name='Scot Not recruited', index=False)
+    Wales_school_list.to_excel(writer, sheet_name='Wales List', index=False)
+    Wales_schools_not_recruited.to_excel(writer, sheet_name='Wales Not recruited', index=False)
+    NI_school_list.to_excel(writer, sheet_name='NI List', index=False)
+    NI_schools_not_recruited.to_excel(writer, sheet_name='NI Not recruited', index=False)
