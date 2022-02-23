@@ -1,5 +1,21 @@
-import datetime, pandas as pd, numpy as np
+import datetime, pandas as pd, numpy as np, re 
 from datetime import date, timedelta
+
+# Method to validate postcodes
+def validate_postcode(pc):
+    pattern = 'Invalid UK Postcode'
+    if len(pc.replace(" ", "")) == 5:
+        pattern = re.compile("^[a-zA-Z]{1}[0-9]{2}[a-zA-Z]{2}")
+    elif len(pc.replace(" ", "")) == 6:
+        pattern = re.compile("^[a-zA-Z]{2}[0-9]{2}[a-zA-Z]{2}")
+ #e.g. TW218FF
+    elif len(pc.replace(" ", "")) == 7:
+        pattern = re.compile("^[a-zA-Z]{2}[0-9]{3}[a-zA-Z]{2}")
+    if pattern != 'Invalid UK Postcode':
+        if pattern.match(pc):
+            return('Valid UK Postcode')
+        else:
+            return(pattern)
 
 # Memberspace sheet
 
@@ -16,6 +32,7 @@ df = df[df.Postcode.isin(Postcodes_Exclude) == False]
 # Remove memberspace import artifacts
 df['Students'] = df['Students'].str.replace('â€“','to')
 # Remove spaces from postcode
+#re.findall("[A-Z]{1,2}[0-9][A-Z0-9]? [0-9][ABD-HJLNP-UW-Z]{2}", x)
 df['Postcode'] = df['Postcode'].str.replace(' ','')
 df['Postcode'] = df['Postcode'].str.upper()
 # Split date and time
