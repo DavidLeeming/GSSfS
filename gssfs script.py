@@ -32,7 +32,6 @@ df = df[df.Postcode.isin(Postcodes_Exclude) == False]
 # Remove memberspace import artifacts
 df['Students'] = df['Students'].str.replace('â€“','to')
 # Remove spaces from postcode
-#re.findall("[A-Z]{1,2}[0-9][A-Z0-9]? [0-9][ABD-HJLNP-UW-Z]{2}", x)
 df['Postcode'] = df['Postcode'].str.replace(' ','')
 df['Postcode'] = df['Postcode'].str.upper()
 # Split date and time
@@ -72,8 +71,8 @@ csv_2020.drop(columns=['Attendees'])
 csv_2020= csv_2020.groupby(pd.Grouper(key='Date', axis=0, freq='5D')).sum()
 csv_2020['2020 total'] = csv_2020['Attendees'].cumsum()
 csv_2020.index = csv_2020.index.map(lambda x: str(x)[:-9])
-#csv_2020["Date"] = csv_2020['Date'] + pd.offsets.DateOffset(years=1)
 Student_count = pd.concat([Student_count, csv_2020], axis=1, join="inner")
+
 # Target signups
 
 Target_students = 211898
@@ -93,7 +92,6 @@ students_per_day = (Target_students - Current_students) / days_left
 d = {'Target Signups': [Target_signups], 'Target Students': [Target_students], 'Current Signups': [Current_signups], 'Current Students': [Current_students], 'Students per day': [students_per_day]}
 target = pd.DataFrame(data=d)
 
-
 fields = ['pcd7', 'ladcd', "lsoa11cd"]
 postcode_csv = pd.read_csv("C:/script/postcode.csv", usecols=fields)
 postcode_csv.columns = ["Postcode", "lsoa", "ladcd"]
@@ -110,7 +108,6 @@ MPM_csv['Postcode'] = MPM_csv['Postcode'].str.replace(' ','')
 fields = ["LSOA code (2011)", "IDACI"]
 Idaci = pd.read_excel("C:/script/idaci.xlsx", usecols=fields)
 Idaci.columns = ["lsoa", "IDACI"]
-
 
 df = pd.merge(left=df, right=regional, how='left', left_on='Postcode', right_on='Postcode')
 df = pd.merge(left=df, right=MPM_csv, how='left', left_on='Postcode', right_on='Postcode')
