@@ -1,5 +1,7 @@
-import datetime, pandas as pd, numpy as np, re 
+import datetime, pandas as pd, numpy as np, re, itertools, threading, time, sys
 from datetime import date, timedelta
+
+done = 'False'
 
 # Method to validate postcodes
 def validate_postcode(pc):
@@ -16,6 +18,23 @@ def validate_postcode(pc):
             return('Valid UK Postcode')
         else:
             return(pattern)
+
+def animate():
+    # Function to produce an animation when loading       
+    for c in itertools.cycle(['.    ', '..   ', '...  ', '.... ', '...  ', '..   ', '.    ']):
+        if done == 'True':
+            # Ends script when done == 'True' 
+            break
+        sys.stdout.write('\r' + str("Running script please wait") + c) 
+        sys.stdout.flush()
+        time.sleep(0.15)
+        # Time taken between animation cycles is 0.15 seconds
+    sys.stdout.write('\rDone! Script Finished Successfully!                         ')
+    time.sleep(1)
+    # Once script is finished will print the above message
+
+t = threading.Thread(target=animate)
+t.start()
 
 # Memberspace sheet
 
@@ -115,7 +134,6 @@ df = pd.merge(left=df, right=Idaci, how='left', left_on='lsoa', right_on='lsoa')
 
 MPM_df = df['MPM rating'].str.extract('(.{1,1})' * 2)
 MPM_df.columns = ["Deprivation rating", "Education rating"]
-#MPM_df["Deprivation rating"] = pd.to_numeric(MPM_df["Deprivation rating"])
 MPM_df["Deprivation rating"] = MPM_df["Deprivation rating"].apply(pd.to_numeric)
 df = pd.concat([df, MPM_df], axis=1)
 df = df.drop(columns=['MPM rating'])
@@ -195,3 +213,5 @@ with pd.ExcelWriter("C:/script/output.xlsx",engine="openpyxl", mode='a') as writ
     Wales_schools_not_recruited.to_excel(writer, sheet_name='Wales Not recruited', index=False)
     NI_school_list.to_excel(writer, sheet_name='NI List', index=False)
     NI_schools_not_recruited.to_excel(writer, sheet_name='NI Not recruited', index=False)
+
+done = 'True'
