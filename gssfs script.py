@@ -236,7 +236,7 @@ try:
     column_names = ["First Name", "Last Name", "Email", "Date", "Time", "Recruitment method", "Previous participant", "Students", "cum sum", "Organisation", "Postcode", "Region", "LA", "GSSfS newsletter", "SEERIH newsletter", "Deprivation rating", 'MPM distribution', "Education rating", "IDACI", "IDACI %", "lsoa", "ladcd"]
     df = df.reindex(columns=column_names)
     df['Date'] = pd.to_datetime(df['Date']).dt.date
-    print(df)
+
     df.fillna(str("NA"))
 except Exception as Argument:
     print(str(Argument))
