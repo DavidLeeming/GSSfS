@@ -143,6 +143,27 @@ s = 'TD'
 num_list = list(num_range)
 num_list = map(str, num_list) 
 Tweed = [s + num_range for num_range in num_list]
-print(Tweed)
 Shetland_Isles = ['ZE1', 'ZE2', 'ZE3']
 Scotland = [Aberdeen, Dundee, Dumfries, Edinburgh, Falkirk, Glasgow, Scottish_Islands, Inverness, Kilmarnock, Orkney, Kirkcaldy, Paisley,Perth, Tweed]
+# List for Wales
+Cardiff = ['CF10', 'CF11', 'CF14', 'CF15', 'CF23', 'CF24', 'CF3', 'CF31', 'CF32', 'CF33', 'CF34', 'CF35', 'CF36', 'CF37', 'CF38', 'CF39', 'CF40', 'CF41', 'CF42', 'CF43', 'CF44', 'CF45', 'CF46', 'CF47', 'CF48', 'CF5', 'CF61', 'CF62', 'CF63', 'CF64', 'CF71', 'CF72', 'CF81', 'CF82', 'CF83']
+num_range = range(1,9)
+s = 'LD'
+num_list = list(num_range)
+num_list = map(str, num_list) 
+Llandrindod_Wells = [s + num_range for num_range in num_list]
+num_range = range(11,79)
+s = 'LL'
+num_list = list(num_range)
+num_list = map(str, num_list) 
+Llandudno = [s + num_range for num_range in num_list]
+Llandudno = [e for e in Llandudno if e not in ('LL50')]
+Newport = ['NP10', 'NP11', 'NP12', 'NP13', 'NP15', 'NP16', 'NP18', 'NP19', 'NP20', 'NP22', 'NP23', 'NP24', 'NP25', 'NP26', 'NP4', 'NP44', 'NP7', 'NP8']
+num_range = range(1,74)
+s = 'SA'
+num_list = list(num_range)
+num_list = map(str, num_list) 
+Swansea = [s + num_range for num_range in num_list]
+Swansea = Swansea = [e for e in Llandudno if e not in ('SA21', 'SA22', 'SA23', 'SA24', 'SA25', 'SA26', 'SA27', 'SA28', 'SA29', 'SA30', 'SA49', 'SA50', 'SA51', 'SA52', 'SA53', 'SA54', 'SA55', 'SA56', 'SA57', 'SA58', 'SA59', 'SA60')]
+Wales = [Cardiff, Llandrindod_Wells, Llandudno, Newport, Swansea]
+print(Wales)
