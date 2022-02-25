@@ -166,4 +166,3 @@ num_list = map(str, num_list)
 Swansea = [s + num_range for num_range in num_list]
 Swansea = Swansea = [e for e in Llandudno if e not in ('SA21', 'SA22', 'SA23', 'SA24', 'SA25', 'SA26', 'SA27', 'SA28', 'SA29', 'SA30', 'SA49', 'SA50', 'SA51', 'SA52', 'SA53', 'SA54', 'SA55', 'SA56', 'SA57', 'SA58', 'SA59', 'SA60')]
 Wales = [Cardiff, Llandrindod_Wells, Llandudno, Newport, Swansea]
-print(Wales)
