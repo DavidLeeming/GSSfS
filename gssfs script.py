@@ -56,6 +56,7 @@ try:
     # Exclude team members by postcode
     Postcodes_Exclude = ["WN4 9DS", "M16 0HR", "M24 1WH", "CV5 6AL", "M41 6PN"]
     df = df[df.Postcode.isin(Postcodes_Exclude) == False]
+    df['Original_postcode'] = df['Postcode']
     # Remove memberspace import artifacts
     df['Students'] = df['Students'].str.replace('â€“','to')
     # Remove spaces from postcode
@@ -86,7 +87,7 @@ try:
         ]
     values = [5, 10, 50, 100, 200, 300, 400]
     Student_count['Students'] = np.select(conditions, values)
-    Student_count = Student_count.drop(columns=["First Name", "Last Name", "Email", "Recruitment method", "Previous participant", "Organisation", "Postcode", "LA", "GSSfS newsletter", "SEERIH newsletter", "Time"])
+    Student_count = Student_count.drop(columns=['Original_postcode', "First Name", "Last Name", "Email", "Recruitment method", "Previous participant", "Organisation", "Postcode", "LA", "GSSfS newsletter", "SEERIH newsletter", "Time"])
     # Number of students per 5 days
     Student_count= Student_count.groupby(pd.Grouper(key='Date', axis=0, freq='5D')).sum()
     Student_count['cum_sum'] = Student_count['Students'].cumsum()
@@ -313,7 +314,7 @@ s = 'SA'
 num_list = list(num_range)
 num_list = map(str, num_list) 
 Swansea = [s + num_range for num_range in num_list]
-Swansea = Swansea = [e for e in Llandudno if e not in ('SA21', 'SA22', 'SA23', 'SA24', 'SA25', 'SA26', 'SA27', 'SA28', 'SA29', 'SA30', 'SA49', 'SA50', 'SA51', 'SA52', 'SA53', 'SA54', 'SA55', 'SA56', 'SA57', 'SA58', 'SA59', 'SA60')]
+Swansea = Swansea = [e for e in Swansea if e not in ('SA21', 'SA22', 'SA23', 'SA24', 'SA25', 'SA26', 'SA27', 'SA28', 'SA29', 'SA30', 'SA49', 'SA50', 'SA51', 'SA52', 'SA53', 'SA54', 'SA55', 'SA56', 'SA57', 'SA58', 'SA59', 'SA60', 'SA62')]
 Wales = [Cardiff, Llandrindod_Wells, Llandudno, Newport, Swansea]
 Wales = list(itertools.chain.from_iterable(Wales))
 Wales = '|'.join(Wales)
@@ -364,8 +365,8 @@ try:
     df = df.drop(columns=['MPM rating'])
 
     conditions = [
-        (df['Deprivation rating'] >= 2),
-        (df['Deprivation rating'] <= 3)
+        (df['Deprivation rating'] <= 2),
+        (df['Deprivation rating'] >= 3)
         ]
     values = ["1/2", "3+"]
     df['MPM distribution'] = np.select(conditions, values)
@@ -457,9 +458,10 @@ except Exception as Argument:
     fail = 'True'
 
 try:
-    column_names = ["First Name", "Last Name", "Email", "Date", "Time", "Recruitment method", "Previous participant", "Students", "cum sum", "Organisation", "Postcode", "Region", "LA", "GSSfS newsletter", "SEERIH newsletter", "Deprivation rating", 'MPM distribution', "Education rating", "IDACI", "IDACI %", "lsoa", "ladcd"]
+    column_names = ["First Name", "Last Name", "Email", "Date", "Time", "Recruitment method", "Previous participant", "Students", "cum sum", "Organisation", 'Original_postcode', "Postcode", "Region", "LA", "GSSfS newsletter", "SEERIH newsletter", "Deprivation rating", 'MPM distribution', "Education rating", "IDACI", "IDACI %", "lsoa", "ladcd"]
     df = df.reindex(columns=column_names)
-    df['Date'] = pd.to_datetime(df['Date']).dt.date
+    df['Date'] = pd.to_datetime(df['Date'], format='%m%d%Y')
+    #df['Date'] = pd.to_datetime(df['Date']).dt.date
 
     df.fillna(str("NA"))
 except Exception as Argument:
