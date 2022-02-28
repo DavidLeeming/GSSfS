@@ -1,3 +1,4 @@
+import itertools
 # List for Manchester
 Bury = ['BL0', 'BL8', 'BL9', 'M26', 'M45', 'M25']
 Bolton = ['BL1','BL2', 'BL3', 'BL4', 'BL5', 'BL6', 'BL7']
@@ -10,12 +11,16 @@ Tameside = ['SK14','M34', 'SK16', 'OL7', 'M43', 'OL6', 'OL5', 'SK15']
 Oldham = ['M35','OL8', 'OL4', 'OL3', 'OL2', 'OL1', 'OL9']
 Rochdale = ['M24','OL10', 'BL9', 'OL11', 'OL12', 'OL15']
 Greater_Manchester = [Bury, Bolton, Wigan, Salford, Trafford, Manchester, Stockport, Tameside, Oldham, Rochdale]
+Greater_Manchester = list(itertools.chain.from_iterable(Greater_Manchester))
+Greater_Manchester = '|'.join(Greater_Manchester)
 # List for East Midlands
 Lincolnshire = ['LN1', 'LN2', 'LN3', 'LN4', 'LN5', 'LN6', 'LN7', 'LN8', 'LN9', 'LN10', 'LN11', 'LN12', 'LN13']
 Derbyshire = ['DE1', 'DE11','DE13', 'DE12','DE14', 'DE15', 'DE21', 'DE22', 'DE23', 'DE24', 'DE3', 'DE4', 'DE45','DE5','DE55', 'DE56', 'DE6', 'DE65', 'DE7', 'DE72', 'DE73', 'DE74', 'DE75']
 Nottinghamshire = ['NG1', 'NG10', 'NG11', 'NG12', 'NG13', 'NG14', 'NG15', 'NG16', 'NG17', 'NG18', 'NG19', 'NG2', 'NG20', 'NG21', 'NG22', 'NG23', 'NG24', 'NG25', 'NG3', 'NG31', 'NG32', 'NG33', 'NG34', 'NG4',
 'NG5', 'NG6', 'NG7', 'NG8', 'NG9']
 East_Midlands = [Nottinghamshire, Derbyshire, Lincolnshire]
+East_Midlands = list(itertools.chain.from_iterable(East_Midlands))
+East_Midlands = '|'.join(East_Midlands)
 # List for East of England
 Cambridgeshire = ['CB1', 'CB10', 'CB11', 'CB2', 'CB21', 'CB22', 'CB23', 'CB24', 'CB25', 'CB3', 'CB4', 'CB5', 'CB6', 'CB7', 'CB8', 'CB9']
 Chelmsford = ['CM0', 'CM1', 'CM11', 'CM12', 'CM13', 'CM14', 'CM15', 'CM16', 'CM17', 'CM18', 'CM19', 'CM2', 'CM20', 'CM21', 'CM22', 'CM23', 'CM24', 'CM3', 'CM4', 'CM5', 'CM6', 'CM7', 'CM77', 'CM8', 'CM9']
@@ -27,8 +32,11 @@ Norwich = ['NR1', 'NR10', 'NR11', 'NR12', 'NR13', 'NR14', 'NR15', 'NR16', 'NR17'
 'NR33', 'NR34', 'NR35', 'NR4', 'NR5', 'NR6', 'NR8', 'NR9']
 Southend_on_sea = ['SS0', 'SS1', 'SS11', 'SS12', 'SS13', 'SS14', 'SS15', 'SS16', 'SS17', 'SS2', 'SS3', 'SS4', 'SS5', 'SS6', 'SS7', 'SS8', 'SS9']
 East_of_England = [Cambridgeshire, Chelmsford, Colchester, Ipswich, Luton, Norwich, Southend_on_sea]
+East_of_England = list(itertools.chain.from_iterable(East_of_England))
+East_of_England = '|'.join(East_of_England)
 # List for Guernsey
 Guernsey = ['GY1', 'GY2', 'GY3', 'GY4', 'GY5', 'GY6', 'GY7', 'GY8', 'GY9', 'GY10']
+Guernsey = '|'.join(Guernsey)
 # List for London
 London = ['E1', 'E10', 'E11', 'E12', 'E13', 'E14', 'E15', 'E16', 'E17', 'E18', 'E1W', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E8', 'E9', 'EC1', 'EC1A', 'EC1M', 'EC1N', 'EC1R', 'EC1V', 'EC1Y', 'EC2', 'EC2A', 'EC2M', 
 'EC2N', 'EC2R', 'EC2V', 'EC2Y', 'EC3', 'EC3A', 'EC3M', 'EC3N','EC3P', 'EC3R', 'EC3V', 'EC4', 'EC4A', 'EC4M', 'EC4N', 'EC4R', 'EC4V', 'EC4Y', 'N1', 'N10', 'N11', 'N12', 'N13', 'N14', 'N15', 'N16', 'N17', 'N18', 
@@ -37,6 +45,7 @@ London = ['E1', 'E10', 'E11', 'E12', 'E13', 'E14', 'E15', 'E16', 'E17', 'E18', '
 'SW13', 'SW14', 'SW15', 'SW16', 'SW17', 'SW18', 'SW19', 'SW1A', 'SW1E', 'SW1H', 'SW1P', 'SW1V', 'SW1W', 'SW1X', 'SW1Y', 'SW2', 'SW20', 'SW3', 'SW4', 'SW5', 'SW6', 'SW7', 'SW8', 'SW9', 'W1', 'W10', 'W11', 'W12', 
 'W13', 'W14', 'W1B', 'W1C', 'W1D', 'W1F', 'W1G', 'W1H', 'W1J', 'W1K', 'W1M', 'W1S', 'W1T', 'W1U', 'W1W', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'WC1', 'WC1A', 'WC1B', 'WC1E', 'WC1H', 'WC1N', 'WC1R', 
 'WC1V', 'WC1X', 'WC2', 'WC2A', 'WC2B', 'WC2E', 'WC2H', 'WC2N', 'WC2R']
+London = '|'.join(London)
 # List for South West
 Bath = ['BA1', 'BA10', 'BA11', 'BA12', 'BA13', 'BA14', 'BA15', 'BA16', 'BA2', 'BA20', 'BA21', 'BA22', 'BA3', 'BA4', 'BA5', 'BA6', 'BA7', 'BA8', 'BA9']
 Bristol = ['BS1', 'BS10', 'BS11', 'BS13', 'BS14', 'BS15', 'BS16', 'BS2', 'BS20', 'BS21', 'BS22', 'BS23', 'BS24', 'BS25', 'BS26', 'BS27', 'BS28', 'BS29', 'BS3', 'BS30', 'BS31', 'BS32', 'BS34', 'BS35', 'BS36', 'BS37',
@@ -49,6 +58,8 @@ Taunton = ['TA1', 'TA10', 'TA11', 'TA12', 'TA13', 'TA14', 'TA15', 'TA16', 'TA17'
 Torquay = ['TQ1', 'TQ10', 'TQ11', 'TQ12', 'TQ13', 'TQ14', 'TQ2', 'TQ3', 'TQ4', 'TQ5', 'TQ6', 'TQ7', 'TQ8', 'TQ9']
 Truro = ['TR1', 'TR10', 'TR11', 'TR12', 'TR13', 'TR14', 'TR15', 'TR16', 'TR17', 'TR18', 'TR2', 'TR20', 'TR21', 'TR22', 'TR23', 'TR24', 'TR25', 'TR26', 'TR27', 'TR3', 'TR4', 'TR5', 'TR6', 'TR7', 'TR8', 'TR9']
 South_West = [Bath, Bristol, Exeter, Plymouth, Taunton, Torquay, Truro]
+South_West = list(itertools.chain.from_iterable(South_West))
+South_West = '|'.join(South_West)
 # List for West Midlands 
 Birmingham = ['B1', 'B10', 'B11', 'B12', 'B13', 'B14', 'B15', 'B16', 'B17', 'B18', 'B19', 'B2', 'B20', 'B21', 'B23', 'B24', 'B25', 'B26', 'B27', 'B28', 'B29', 'B3', 'B30', 'B31', 'B32', 'B33', 'B34', 'B35', 
 'B36', 'B37', 'B38', 'B4', 'B40', 'B42', 'B43', 'B44', 'B45', 'B46', 'B47', 'B48', 'B49', 'B5', 'B50', 'B6', 'B60', 'B61', 'B62', 'B63', 'B64', 'B65', 'B66', 'B67', 'B68', 'B69', 'B7', 'B70', 'B71', 'B72', 
@@ -58,8 +69,11 @@ Walsall = ['WS1', 'WS10', 'WS11', 'WS12', 'WS13', 'WS14', 'WS15', 'WS2', 'WS3', 
 Coventry = ['CV1', 'CV2', 'CV3', 'CV4', 'CV5', 'CV6', 'CV7', 'CV8']
 Warwickshire = ['CV9', 'CV10', 'CV11', 'CV12', 'CV13', 'CV21', 'CV22', 'CV23', 'CV31', 'CV32', 'CV33', 'CV34', 'CV35', 'CV36', 'CV37', 'CV47']
 West_Midlands = [Birmingham, Dudley, Walsall, Coventry, Warwickshire]
+West_Midlands = list(itertools.chain.from_iterable(West_Midlands))
+West_Midlands = '|'.join(West_Midlands)
 # List for Stoke
 Stoke = ['ST1', 'ST10', 'ST11', 'ST12', 'ST13', 'ST14', 'ST15', 'ST16', 'ST17', 'ST18', 'ST19', 'ST2', 'ST20', 'ST21', 'ST3', 'ST4', 'ST5', 'ST6', 'ST7', 'ST8', 'ST9']
+Stoke = '|'.join(Stoke)
 # List for Yorkshire
 Bradford = ['BD1', 'BD10', 'BD11', 'BD12', 'BD13', 'BD14', 'BD15', 'B16', 'BD17', 'BD18', 'BD19', 'BD2', 'BD20', 'BD21', 'BD22', 'BD23', 'BD24', 'BD3', 'BD4', 'BD5', 'BD6', 'BD7', 'BD8', 'BD9']
 Halifax = ['HX1', 'HX2', 'HX3', 'HX4', 'HX5', 'HX6', 'HX7']
@@ -68,12 +82,15 @@ Leeds = ['LS1', 'LS10', 'LS11', 'LS12', 'LS13', 'LS14', 'LS15', 'LS16', 'LS17', 
 'LS6', 'LS7', 'LS8', 'LS9']
 Huddersfield = ['HD1', 'HD2', 'HD3', 'HD4', 'HD5', 'HD6', 'HD7', 'HD8', 'HD9']
 Yorkshire_and_Humber = [Bradford, Halifax, Wakefield, Leeds, Huddersfield]
+Yorkshire_and_Humber = list(itertools.chain.from_iterable(Yorkshire_and_Humber))
+Yorkshire_and_Humber = '|'.join(Yorkshire_and_Humber)
 # List for Northern Ireland 
 num_range = range(1,95)
 s = 'BT'
 num_list = list(num_range)
 num_list = map(str, num_list) 
 Northern_Ireland = [s + num_range for num_range in num_list]
+Northern_Ireland = '|'.join(Northern_Ireland)
 # List for Scotland 
 Aberdeen = ['AB10', 'AB11', 'AB12', 'AB13', 'AB14', 'AB15', 'AB16', 'AB21', 'AB22', 'AB23', 'AB24', 'AB25', 'AB30', 'AB31', 'AB32', 'AB33', 'AB34', 'AB35', 'AB36', 'AB37', 'AB38', 'AB39', 'AB41', 'AB42', 
 'AB43', 'AB44', 'AB45', 'AB51', 'AB52', 'AB53', 'AB54', 'AB55', 'AB56', 'AB99']
@@ -145,6 +162,8 @@ num_list = map(str, num_list)
 Tweed = [s + num_range for num_range in num_list]
 Shetland_Isles = ['ZE1', 'ZE2', 'ZE3']
 Scotland = [Aberdeen, Dundee, Dumfries, Edinburgh, Falkirk, Glasgow, Scottish_Islands, Inverness, Kilmarnock, Orkney, Kirkcaldy, Paisley,Perth, Tweed]
+Scotland = list(itertools.chain.from_iterable(Scotland))
+Scotland = '|'.join(Scotland)
 # List for Wales
 Cardiff = ['CF10', 'CF11', 'CF14', 'CF15', 'CF23', 'CF24', 'CF3', 'CF31', 'CF32', 'CF33', 'CF34', 'CF35', 'CF36', 'CF37', 'CF38', 'CF39', 'CF40', 'CF41', 'CF42', 'CF43', 'CF44', 'CF45', 'CF46', 'CF47', 'CF48', 'CF5', 'CF61', 'CF62', 'CF63', 'CF64', 'CF71', 'CF72', 'CF81', 'CF82', 'CF83']
 num_range = range(1,9)
@@ -166,3 +185,5 @@ num_list = map(str, num_list)
 Swansea = [s + num_range for num_range in num_list]
 Swansea = Swansea = [e for e in Llandudno if e not in ('SA21', 'SA22', 'SA23', 'SA24', 'SA25', 'SA26', 'SA27', 'SA28', 'SA29', 'SA30', 'SA49', 'SA50', 'SA51', 'SA52', 'SA53', 'SA54', 'SA55', 'SA56', 'SA57', 'SA58', 'SA59', 'SA60')]
 Wales = [Cardiff, Llandrindod_Wells, Llandudno, Newport, Swansea]
+Wales = list(itertools.chain.from_iterable(Wales))
+Wales = '|'.join(Wales)
