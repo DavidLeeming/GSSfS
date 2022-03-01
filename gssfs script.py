@@ -109,26 +109,38 @@ except Exception as Argument:
 
 # Target signups
 
-try:
-    Target_students = 211898
-    Target_signups = 1537
+#try:
+Target_students = 211898
+Target_signups = 1537
 
 
-    d0 = date.today()
-    d1 = date(2022, 6, 14)
-    delta = d1 - d0
-    days_left = delta.days
-    last_week = d0 - datetime.timedelta(days=7)
-    Current_signups = len(df.index)
-    df['cum sum'] = df['Students'].cumsum()
-    Current_students = df["cum sum"].iloc[-1]
-    #weekly_signups = 
-    students_per_day = (Target_students - Current_students) / days_left
-    d = {'Target Signups': [Target_signups], 'Target Students': [Target_students], 'Current Signups': [Current_signups], 'Current Students': [Current_students], 'Students per day': [students_per_day]}
-    target = pd.DataFrame(data=d)
-except Exception as Argument:
-    print(str(Argument))
-    fail = 'True'
+d0 = date.today()
+d1 = date(2022, 6, 14)
+delta = d1 - d0
+days_left = delta.days
+last_week = d0 - datetime.timedelta(days=7)
+Current_signups = len(df.index)
+df['cum sum'] = df['Students'].cumsum()
+Current_students = df["cum sum"].iloc[-1]
+start_delta = datetime.timedelta(7)
+last_week = d0 - start_delta
+print(type(last_week))
+#last_week = datetime.datetime.strptime(last_week, '%Y-%m-%d')
+#last_week.strftime('%Y%m%d')
+print(last_week)
+last_week_df = df
+last_week_df['Date'] = last_week_df['Date'].dt.date
+#last_week_df['Date'] = pd.to_datetime(last_week_df['Date'])
+#last_week_df[(last_week_df['Date'] > last_week_df)]
+print(last_week_df.dtypes)
+res = last_week_df[~(last_week_df['Date'] > last_week)]
+weekly_signups = res["cum sum"].iloc[-1]
+weekly_signups = Current_students - weekly_signups 
+print(weekly_signups)
+#weekly_signups = 
+students_per_day = (Target_students - Current_students) / days_left
+d = {'Target Signups': [Target_signups], 'Target Students': [Target_students], 'Current Signups': [Current_signups], 'Current Students': [Current_students], 'Students per day': [students_per_day], 'Weekly Signups': [weekly_signups]}
+target = pd.DataFrame(data=d)
 
 # List for Manchester
 Bury = ['BL0', 'BL8', 'BL9', 'M26', 'M45', 'M25']
@@ -144,6 +156,10 @@ Rochdale = ['M24','OL10', 'BL9', 'OL11', 'OL12', 'OL15']
 Greater_Manchester = [Bury, Bolton, Wigan, Salford, Trafford, Manchester, Stockport, Tameside, Oldham, Rochdale]
 Greater_Manchester = list(itertools.chain.from_iterable(Greater_Manchester))
 Greater_Manchester = '|'.join(Greater_Manchester)
+Manc_trunc = ['SK', 'M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'BL', 'OL', 'WN', 'WA']
+Manc_trunc = '|'.join(Manc_trunc)
+Manc_trunc_1 = ['M', 'S', 'O', 'B', 'W']
+Manc_trunc_1 = '|'.join(Manc_trunc_1)
 # List for East Midlands
 Lincolnshire = ['LN1', 'LN2', 'LN3', 'LN4', 'LN5', 'LN6', 'LN7', 'LN8', 'LN9', 'LN10', 'LN11', 'LN12', 'LN13']
 Derbyshire = ['DE1', 'DE11','DE13', 'DE12','DE14', 'DE15', 'DE21', 'DE22', 'DE23', 'DE24', 'DE3', 'DE4', 'DE45','DE5','DE55', 'DE56', 'DE6', 'DE65', 'DE7', 'DE72', 'DE73', 'DE74', 'DE75']
@@ -171,12 +187,19 @@ Guernsey = '|'.join(Guernsey)
 # List for London
 London = ['E1', 'E10', 'E11', 'E12', 'E13', 'E14', 'E15', 'E16', 'E17', 'E18', 'E1W', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E8', 'E9', 'EC1', 'EC1A', 'EC1M', 'EC1N', 'EC1R', 'EC1V', 'EC1Y', 'EC2', 'EC2A', 'EC2M', 
 'EC2N', 'EC2R', 'EC2V', 'EC2Y', 'EC3', 'EC3A', 'EC3M', 'EC3N','EC3P', 'EC3R', 'EC3V', 'EC4', 'EC4A', 'EC4M', 'EC4N', 'EC4R', 'EC4V', 'EC4Y', 'N1', 'N10', 'N11', 'N12', 'N13', 'N14', 'N15', 'N16', 'N17', 'N18', 
-'N19', 'N2', 'N20', 'N21', 'N22', 'N3', 'N4', 'N5', 'N6', 'N7', 'N8', 'N9', 'NW1', 'NW10', 'NW11', 'NW2', 'NW3', 'NW4', 'NW5', 'NW6', 'NW7', 'NW8', 'NW9', 'SE1', 'SE10', 'SE11', 'SE12', 'SE13', 'SE14', 'SE15', 
+'N19', 'N2', 'N20', 'N21', 'N22', 'N4', 'N5', 'N6', 'N7', 'N8', 'N9', 'NW1', 'NW10', 'NW11', 'NW2', 'NW3', 'NW4', 'NW5', 'NW6', 'NW7', 'NW8', 'NW9', 'SE1', 'SE10', 'SE11', 'SE12', 'SE13', 'SE14', 'SE15', 
 'SE16', 'SE17', 'SE18', 'SE19', 'SE2', 'SE20', 'SE21', 'SE22', 'SE23', 'SE24', 'SE25', 'SE26', 'SE27', 'SE28', 'SE3', 'SE4', 'SE5', 'SE6', 'SE7', 'SE8', 'SE9', 'SW1', 'SW10', 'SW11', 'SW12', 
 'SW13', 'SW14', 'SW15', 'SW16', 'SW17', 'SW18', 'SW19', 'SW1A', 'SW1E', 'SW1H', 'SW1P', 'SW1V', 'SW1W', 'SW1X', 'SW1Y', 'SW2', 'SW20', 'SW3', 'SW4', 'SW5', 'SW6', 'SW7', 'SW8', 'SW9', 'W1', 'W10', 'W11', 'W12', 
 'W13', 'W14', 'W1B', 'W1C', 'W1D', 'W1F', 'W1G', 'W1H', 'W1J', 'W1K', 'W1M', 'W1S', 'W1T', 'W1U', 'W1W', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'WC1', 'WC1A', 'WC1B', 'WC1E', 'WC1H', 'WC1N', 'WC1R', 
-'WC1V', 'WC1X', 'WC2', 'WC2A', 'WC2B', 'WC2E', 'WC2H', 'WC2N', 'WC2R']
+'WC1V', 'WC1X', 'WC2', 'WC2A', 'WC2B', 'WC2E', 'WC2H', 'WC2N', 'WC2R', 'DA74', 'TW1', 'TW2', 'TW3', 'TW4', 'TW5', 'TW6', 'TW7', 'TW8', 'TW9', 'KT1', 'KT2', 'KT3', 'KT4', 'KT5', 'RM1', 'RM2', 'RM3', 'RM4', 'RM5', 'RM6'
+'RM7', 'RM8', 'RM9', 'NW1', 'NW2', 'NW3', 'NW4', 'NW5', 'NW6', 'NW7', 'NW8', 'NW9', 'HA0', 'HA1', 'HA2', 'HA3' 'HA4', 'HA5', 'SM1', 'SM2', 'SM3', 'SM4', 'SM5', 'SM6', 'SM7', 'SM8', 'SM9', 'IG1', 'IG2', 'IG3', 
+'IG4', 'IG5', 'IG6', 'IG7', 'IG8', 'IG9', 'BR1', 'BR2', 'BR3', 'BR4', 'BR5', 'BR6', 'BR7', 'BR8', 'BR9', 'CR0', 'CR1', 'CR2', 'CR3', 'CR4', 'CR5']
 London = '|'.join(London)
+London_trunc = ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E8', 'E9', 'EC', 'N1', 'N2', 'N4', 'N5', 'N6', 'N7', 'N8', 'N9', 'W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'WC', 'SE', 'SW', 'TW', 'DA', 
+'IG', 'KT', 'NW', 'HA', 'SM', 'RM', 'BR', 'CR']
+London_trunc = '|'.join(London_trunc)
+London_trunc_1 = ['E', 'N', 'W', 'S', 'T', 'D', 'I', 'K', 'R', 'H', 'B', 'C']
+London_trunc_1 = '|'.join(London_trunc_1)
 # List for South West
 Bath = ['BA1', 'BA10', 'BA11', 'BA12', 'BA13', 'BA14', 'BA15', 'BA16', 'BA2', 'BA20', 'BA21', 'BA22', 'BA3', 'BA4', 'BA5', 'BA6', 'BA7', 'BA8', 'BA9']
 Bristol = ['BS1', 'BS10', 'BS11', 'BS13', 'BS14', 'BS15', 'BS16', 'BS2', 'BS20', 'BS21', 'BS22', 'BS23', 'BS24', 'BS25', 'BS26', 'BS27', 'BS28', 'BS29', 'BS3', 'BS30', 'BS31', 'BS32', 'BS34', 'BS35', 'BS36', 'BS37',
@@ -202,6 +225,10 @@ Warwickshire = ['CV9', 'CV10', 'CV11', 'CV12', 'CV13', 'CV21', 'CV22', 'CV23', '
 West_Midlands = [Birmingham, Dudley, Walsall, Coventry, Warwickshire]
 West_Midlands = list(itertools.chain.from_iterable(West_Midlands))
 West_Midlands = '|'.join(West_Midlands)
+West_Midlands_trunc = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'DY', 'WS', 'CV']
+West_Midlands_trunc = '|'.join(West_Midlands_trunc)
+West_Midlands_trunc_1 = ['B', 'C', 'W', 'D']
+West_Midlands_trunc_1 = '|'.join(West_Midlands_trunc_1)
 # List for Stoke
 Stoke = ['ST1', 'ST10', 'ST11', 'ST12', 'ST13', 'ST14', 'ST15', 'ST16', 'ST17', 'ST18', 'ST19', 'ST2', 'ST20', 'ST21', 'ST3', 'ST4', 'ST5', 'ST6', 'ST7', 'ST8', 'ST9']
 Stoke = '|'.join(Stoke)
@@ -292,9 +319,16 @@ num_list = list(num_range)
 num_list = map(str, num_list) 
 Tweed = [s + num_range for num_range in num_list]
 Shetland_Isles = ['ZE1', 'ZE2', 'ZE3']
-Scotland = [Aberdeen, Dundee, Dumfries, Edinburgh, Falkirk, Glasgow, Scottish_Islands, Inverness, Kilmarnock, Orkney, Kirkcaldy, Paisley,Perth, Tweed]
+num_range = range(1,13)
+s = 'ML'
+num_list = list(num_range)
+num_list = map(str, num_list) 
+Motherwell = [s + num_range for num_range in num_list]
+Scotland = [Aberdeen, Dundee, Dumfries, Edinburgh, Falkirk, Glasgow, Scottish_Islands, Inverness, Kilmarnock, Orkney, Kirkcaldy, Paisley,Perth, Tweed, Motherwell]
 Scotland = list(itertools.chain.from_iterable(Scotland))
 Scotland = '|'.join(Scotland)
+Scot_trunc = ['AB', 'DD', 'DG', 'ZE', 'PH', 'PA', 'KW', 'KA', 'TD', 'KY', 'IV', 'HS', 'FK', 'EH', 'BT', 'G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'ML']
+Scot_trunc = '|'.join(Scot_trunc)
 # List for Wales
 Cardiff = ['CF10', 'CF11', 'CF14', 'CF15', 'CF23', 'CF24', 'CF3', 'CF31', 'CF32', 'CF33', 'CF34', 'CF35', 'CF36', 'CF37', 'CF38', 'CF39', 'CF40', 'CF41', 'CF42', 'CF43', 'CF44', 'CF45', 'CF46', 'CF47', 'CF48', 'CF5', 'CF61', 'CF62', 'CF63', 'CF64', 'CF71', 'CF72', 'CF81', 'CF82', 'CF83']
 num_range = range(1,9)
@@ -321,20 +355,22 @@ Wales = '|'.join(Wales)
 
 #try:
 df['Trunc'] = df['Postcode'].str[:4]
+df['Trunc_trunc'] = df['Postcode'].str[:2]
+df['Trunc_trunc_1'] = df['Postcode'].str[:1]
 conditions = [
-    df["Trunc"].str.contains(London, na=False),
+    df['Trunc_trunc_1'].str.contains(London_trunc_1, na=False) & df['Trunc_trunc'].str.contains(London_trunc, na=False) & df["Trunc"].str.contains(London, na=False),
     df["Trunc"].str.contains(Guernsey, na=False),
-    df["Trunc"].str.contains(Greater_Manchester, na=False),
+    df['Trunc_trunc_1'].str.contains(Manc_trunc_1, na=False) & df['Trunc_trunc'].str.contains(Manc_trunc, na=False) & df["Trunc"].str.contains(Greater_Manchester, na=False),
     df["Trunc"].str.contains(Yorkshire_and_Humber, na=False),
     df["Trunc"].str.contains(Northern_Ireland, na=False),
-    df["Trunc"].str.contains(Scotland, na=False),
+    df['Trunc_trunc'].str.contains(Scot_trunc, na=False) & df["Trunc"].str.contains(Scotland, na=False),
     df["Trunc"].str.contains(Wales, na=False),
     df["Trunc"].str.contains(East_Midlands, na=False),
     df["Trunc"].str.contains(East_of_England, na=False),
-    df["Trunc"].str.contains(West_Midlands, na=False),
+    df['Trunc_trunc_1'].str.contains(West_Midlands_trunc_1, na=False) & df['Trunc_trunc'].str.contains(West_Midlands_trunc, na=False) & df["Trunc"].str.contains(West_Midlands, na=False),
     df["Trunc"].str.contains(South_West, na=False),
     df["Trunc"].str.contains(Stoke, na=False),
-]
+    ]
 
 choices = ['London', 'Guernsey', 'Manchester','Yorkshire', 'Northern Ireland', 'Scotland', 'Wales', 
 'East Midlands', 'East of England', 'West Midlands', 'South West', 'Stoke']
@@ -460,9 +496,8 @@ except Exception as Argument:
 try:
     column_names = ["First Name", "Last Name", "Email", "Date", "Time", "Recruitment method", "Previous participant", "Students", "cum sum", "Organisation", 'Original_postcode', "Postcode", "Region", "LA", "GSSfS newsletter", "SEERIH newsletter", "Deprivation rating", 'MPM distribution', "Education rating", "IDACI", "IDACI %", "lsoa", "ladcd"]
     df = df.reindex(columns=column_names)
-    df['Date'] = pd.to_datetime(df['Date'], format='%m%d%Y')
-    #df['Date'] = pd.to_datetime(df['Date']).dt.date
-
+    #df['Date'] = pd.to_datetime(df['Date'], format='%Y%m%d')
+    df['Date'] = pd.to_datetime(df['Date']).dt.date
     df.fillna(str("NA"))
 except Exception as Argument:
     print(str(Argument))
