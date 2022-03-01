@@ -190,7 +190,7 @@ London = ['E1', 'E10', 'E11', 'E12', 'E13', 'E14', 'E15', 'E16', 'E17', 'E18', '
 'N19', 'N2', 'N20', 'N21', 'N22', 'N4', 'N5', 'N6', 'N7', 'N8', 'N9', 'NW1', 'NW10', 'NW11', 'NW2', 'NW3', 'NW4', 'NW5', 'NW6', 'NW7', 'NW8', 'NW9', 'SE1', 'SE10', 'SE11', 'SE12', 'SE13', 'SE14', 'SE15', 
 'SE16', 'SE17', 'SE18', 'SE19', 'SE2', 'SE20', 'SE21', 'SE22', 'SE23', 'SE24', 'SE25', 'SE26', 'SE27', 'SE28', 'SE3', 'SE4', 'SE5', 'SE6', 'SE7', 'SE8', 'SE9', 'SW1', 'SW10', 'SW11', 'SW12', 
 'SW13', 'SW14', 'SW15', 'SW16', 'SW17', 'SW18', 'SW19', 'SW1A', 'SW1E', 'SW1H', 'SW1P', 'SW1V', 'SW1W', 'SW1X', 'SW1Y', 'SW2', 'SW20', 'SW3', 'SW4', 'SW5', 'SW6', 'SW7', 'SW8', 'SW9', 'W1', 'W10', 'W11', 'W12', 
-'W13', 'W14', 'W1B', 'W1C', 'W1D', 'W1F', 'W1G', 'W1H', 'W1J', 'W1K', 'W1M', 'W1S', 'W1T', 'W1U', 'W1W', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'WC1', 'WC1A', 'WC1B', 'WC1E', 'WC1H', 'WC1N', 'WC1R', 
+'W13', 'W14', 'W1B', 'W1C', 'W1D', 'W1F', 'W1G', 'W1H', 'W1J', 'W1K', 'W1M', 'W1S', 'W1T', 'W1U', 'W1W', '  W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'WC1', 'WC1A', 'WC1B', 'WC1E', 'WC1H', 'WC1N', 'WC1R', 
 'WC1V', 'WC1X', 'WC2', 'WC2A', 'WC2B', 'WC2E', 'WC2H', 'WC2N', 'WC2R', 'DA74', 'TW1', 'TW2', 'TW3', 'TW4', 'TW5', 'TW6', 'TW7', 'TW8', 'TW9', 'KT1', 'KT2', 'KT3', 'KT4', 'KT5', 'RM1', 'RM2', 'RM3', 'RM4', 'RM5', 'RM6'
 'RM7', 'RM8', 'RM9', 'NW1', 'NW2', 'NW3', 'NW4', 'NW5', 'NW6', 'NW7', 'NW8', 'NW9', 'HA0', 'HA1', 'HA2', 'HA3' 'HA4', 'HA5', 'SM1', 'SM2', 'SM3', 'SM4', 'SM5', 'SM6', 'SM7', 'SM8', 'SM9', 'IG1', 'IG2', 'IG3', 
 'IG4', 'IG5', 'IG6', 'IG7', 'IG8', 'IG9', 'BR1', 'BR2', 'BR3', 'BR4', 'BR5', 'BR6', 'BR7', 'BR8', 'BR9', 'CR0', 'CR1', 'CR2', 'CR3', 'CR4', 'CR5']
@@ -417,27 +417,52 @@ except Exception as Argument:
     fail = 'True'
 
 # England recruited
+df['Trunc'] = df['Postcode'].str[:4]
+df['Trunc_trunc'] = df['Postcode'].str[:2]
+df['Trunc_trunc_1'] = df['Postcode'].str[:1]
+conditions = [
+    df['Trunc_trunc_1'].str.contains(London_trunc_1, na=False) & df['Trunc_trunc'].str.contains(London_trunc, na=False) & df["Trunc"].str.contains(London, na=False),
+    df["Trunc"].str.contains(Guernsey, na=False),
+    df['Trunc_trunc_1'].str.contains(Manc_trunc_1, na=False) & df['Trunc_trunc'].str.contains(Manc_trunc, na=False) & df["Trunc"].str.contains(Greater_Manchester, na=False),
+    df["Trunc"].str.contains(Yorkshire_and_Humber, na=False),
+    df["Trunc"].str.contains(Northern_Ireland, na=False),
+    df['Trunc_trunc'].str.contains(Scot_trunc, na=False) & df["Trunc"].str.contains(Scotland, na=False),
+    df["Trunc"].str.contains(Wales, na=False),
+    df["Trunc"].str.contains(East_Midlands, na=False),
+    df["Trunc"].str.contains(East_of_England, na=False),
+    df['Trunc_trunc_1'].str.contains(West_Midlands_trunc_1, na=False) & df['Trunc_trunc'].str.contains(West_Midlands_trunc, na=False) & df["Trunc"].str.contains(West_Midlands, na=False),
+    df["Trunc"].str.contains(South_West, na=False),
+    df["Trunc"].str.contains(Stoke, na=False),
+    ]
+
+choices = ['London', 'Guernsey', 'Manchester','Yorkshire', 'Northern Ireland', 'Scotland', 'Wales', 
+'East Midlands', 'East of England', 'West Midlands', 'South West', 'Stoke']
+df['Region'] = np.select(conditions, choices, default='NA')
 try:
     fields = ["Establishment name", "Postcode", "Phase of education", "Website address", "Telephone number"]
     Eng_school_list = pd.read_excel("C:/script/Eng_Schools.xlsx", 'Open', usecols=fields, converters={'Telephone number':str})
     Eng_school_list['Postcode'] = Eng_school_list['Postcode'].str.replace(' ','')
     Eng_school_list['Trunc'] = Eng_school_list['Postcode'].str[:4]
+    Eng_school_list['Trunc_trunc'] = Eng_school_list['Postcode'].str[:2]
+    Eng_school_list['Trunc_trunc_1'] = Eng_school_list['Postcode'].str[:1]
     conditions = [
-        Eng_school_list["Trunc"].str.contains(London, na=False),
+        Eng_school_list['Trunc_trunc_1'].str.contains(London_trunc_1, na=False) & Eng_school_list['Trunc_trunc'].str.contains(London_trunc, na=False) & Eng_school_list["Trunc"].str.contains(London, na=False),
         Eng_school_list["Trunc"].str.contains(Guernsey, na=False),
-        Eng_school_list["Trunc"].str.contains(Greater_Manchester, na=False),
+        Eng_school_list['Trunc_trunc_1'].str.contains(Manc_trunc_1, na=False) & Eng_school_list['Trunc_trunc'].str.contains(Manc_trunc, na=False) & Eng_school_list["Trunc"].str.contains(Greater_Manchester, na=False),
         Eng_school_list["Trunc"].str.contains(Yorkshire_and_Humber, na=False),
         Eng_school_list["Trunc"].str.contains(East_Midlands, na=False),
         Eng_school_list["Trunc"].str.contains(East_of_England, na=False),
-        Eng_school_list["Trunc"].str.contains(West_Midlands, na=False),
+        Eng_school_list['Trunc_trunc_1'].str.contains(West_Midlands_trunc_1, na=False) & Eng_school_list['Trunc_trunc'].str.contains(West_Midlands_trunc, na=False) & Eng_school_list["Trunc"].str.contains(West_Midlands, na=False),
         Eng_school_list["Trunc"].str.contains(South_West, na=False),
         Eng_school_list["Trunc"].str.contains(Stoke, na=False),
-    ]
+        ]
 
     choices = ['London', 'Guernsey', 'Manchester','Yorkshire', 'East Midlands',
     'East of England', 'West Midlands', 'South West', 'Stoke']
     Eng_school_list['Region'] = np.select(conditions, choices, default='NA')
     Eng_school_list = Eng_school_list.drop(columns=['Trunc'])
+    Eng_school_list = Eng_school_list.drop(columns=['Trunc_trunc'])
+    Eng_school_list = Eng_school_list.drop(columns=['Trunc_trunc_1'])
     Eng_schools_not_recruited = Eng_school_list
     columns = ['Postcode']
     dict = df['Postcode']
