@@ -417,27 +417,6 @@ except Exception as Argument:
     fail = 'True'
 
 # England recruited
-df['Trunc'] = df['Postcode'].str[:4]
-df['Trunc_trunc'] = df['Postcode'].str[:2]
-df['Trunc_trunc_1'] = df['Postcode'].str[:1]
-conditions = [
-    df['Trunc_trunc_1'].str.contains(London_trunc_1, na=False) & df['Trunc_trunc'].str.contains(London_trunc, na=False) & df["Trunc"].str.contains(London, na=False),
-    df["Trunc"].str.contains(Guernsey, na=False),
-    df['Trunc_trunc_1'].str.contains(Manc_trunc_1, na=False) & df['Trunc_trunc'].str.contains(Manc_trunc, na=False) & df["Trunc"].str.contains(Greater_Manchester, na=False),
-    df["Trunc"].str.contains(Yorkshire_and_Humber, na=False),
-    df["Trunc"].str.contains(Northern_Ireland, na=False),
-    df['Trunc_trunc'].str.contains(Scot_trunc, na=False) & df["Trunc"].str.contains(Scotland, na=False),
-    df["Trunc"].str.contains(Wales, na=False),
-    df["Trunc"].str.contains(East_Midlands, na=False),
-    df["Trunc"].str.contains(East_of_England, na=False),
-    df['Trunc_trunc_1'].str.contains(West_Midlands_trunc_1, na=False) & df['Trunc_trunc'].str.contains(West_Midlands_trunc, na=False) & df["Trunc"].str.contains(West_Midlands, na=False),
-    df["Trunc"].str.contains(South_West, na=False),
-    df["Trunc"].str.contains(Stoke, na=False),
-    ]
-
-choices = ['London', 'Guernsey', 'Manchester','Yorkshire', 'Northern Ireland', 'Scotland', 'Wales', 
-'East Midlands', 'East of England', 'West Midlands', 'South West', 'Stoke']
-df['Region'] = np.select(conditions, choices, default='NA')
 try:
     fields = ["Establishment name", "Postcode", "Phase of education", "Website address", "Telephone number"]
     Eng_school_list = pd.read_excel("C:/script/Eng_Schools.xlsx", 'Open', usecols=fields, converters={'Telephone number':str})
