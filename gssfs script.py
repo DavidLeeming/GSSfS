@@ -1,6 +1,7 @@
-import datetime, pandas as pd, numpy as np, re, itertools, threading, time, sys, pathlib
+import datetime, pandas as pd, numpy as np, re, itertools, threading, time, sys, pathlib, openpyxl, xlrd
 from pathlib import Path
 import win32com.client as win32
+import openpyxl as px
 from datetime import date, timedelta
 win32c = win32.constants
 cwd = (str(sys.argv[0][:-22]))
@@ -57,6 +58,7 @@ try:
     df["Date"] = new[0]
     df["Time"] = df["Time"].str[:-6]
     df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
+    print(df['Date'])
 except Exception as Argument:
     print(str(Argument))
     fail = 'True'
@@ -502,14 +504,17 @@ try:
     column_names = ["First Name", "Last Name", "Email", "Date", "Time", "Recruitment method", "Previous participant", "Students", "cum sum", "Organisation", 'Original_postcode', "Postcode", "Region", "LA", "GSSfS newsletter", "SEERIH newsletter", "Deprivation rating", 'MPM distribution', "Education rating", "IDACI", "IDACI %", "lsoa", "ladcd"]
     df = df.reindex(columns=column_names)
     #df['Date'] = pd.to_datetime(df['Date'], format='%Y%m%d')
-    df['Date'] = pd.to_datetime(df['Date']).dt.date
+    #df['Date'] = pd.to_datetime(df['Date']).dt.date
+    #df['Date'] = df['Date'].apply(lambda x: xlrd.xldate.xldate_as_datetime(x, 0))
     df.fillna(str("NA"))
 except Exception as Argument:
     print(str(Argument))
     fail = 'True'
 
 try:
-    df.to_excel(str(cwd) + "/output.xlsx", sheet_name='Memberspace', index=False)   
+    with pd.ExcelWriter(str(cwd) + "/output.xlsx",engine="xlsxwriter", mode='w', 
+    datetime_format='mm-dd-yy hh:mm:ss', date_format='mmm-dd-yy') as writer:
+        df.to_excel(writer, sheet_name='Memberspace', index=False) 
     with pd.ExcelWriter(str(cwd) + "/output.xlsx",engine="openpyxl", mode='a') as writer:
         target.to_excel(writer, sheet_name='Target Signups', index=False)
         Student_count.to_excel(writer, sheet_name='Student Count')
@@ -525,5 +530,27 @@ except Exception as Argument:
     print(str(Argument))
     fail = 'True'
 
+
+try: 
+    with pd.ExcelWriter(str(cwd) + "/Regional Champion Data.xlsx",engine="xlsxwriter", mode='w', 
+    datetime_format='mm-dd-yy hh:mm:ss', date_format='mmm-dd-yy') as writer:
+        Eng_school_list.to_excel(writer, sheet_name='Eng List', index=False) 
+    with pd.ExcelWriter(str(cwd) + "//Regional Champion Data.xlsx",engine="openpyxl", mode='a') as writer:
+        Eng_schools_not_recruited.to_excel(writer, sheet_name='Eng Not recruited', index=False)
+        Scot_school_list.to_excel(writer, sheet_name='Scot List', index=False)
+        Scot_schools_not_recruited.to_excel(writer, sheet_name='Scot Not recruited', index=False)
+        Wales_school_list.to_excel(writer, sheet_name='Wales List', index=False)
+        Wales_schools_not_recruited.to_excel(writer, sheet_name='Wales Not recruited', index=False)
+        NI_school_list.to_excel(writer, sheet_name='NI List', index=False)
+        NI_schools_not_recruited.to_excel(writer, sheet_name='NI Not recruited', index=False)
+    wb= px.load_workbook(str(cwd) + '/Regional Champion Data.xlsx')
+    ws = wb["Eng Not recruited"]
+    ws.auto_filter.ref = ws.dimensions
+    ws = wb["Eng List"]
+    ws.auto_filter.ref = ws.dimensions
+    wb.save(str(cwd) + '/Regional Champion Data.xlsx')
+except Exception as Argument:
+    print(str(Argument))
+    fail = 'True'
 
 done = 'True'
