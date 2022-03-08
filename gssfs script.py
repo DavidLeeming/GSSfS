@@ -1,4 +1,5 @@
-import datetime, pandas as pd, numpy as np, re, itertools, threading, time, sys, pathlib, openpyxl, xlrd
+import datetime, pandas as pd, numpy as np, itertools, threading, time, sys, pathlib, openpyxl, xlrd
+import regex as re
 from pathlib import Path
 import win32com.client as win32
 import openpyxl as px
@@ -510,6 +511,36 @@ try:
 except Exception as Argument:
     print(str(Argument))
     fail = 'True'
+
+#try:
+fields = ["Postcode (if you are not registering as a school)."]
+prev_signups = pd.read_excel(str(cwd) + "/2020 signup data.xlsx")
+print(prev_signups)
+prev_signups['Postcode'] = prev_signups['Postcode'].str.replace(' ','')
+prev_signups['Postcode'] = prev_signups['Postcode'].str.replace('`','')
+prev_signups['Postcode'] = prev_signups['Postcode'].str.upper()
+prev_signups.dropna(how ='any')
+prev_signups['Not school'] = prev_signups['Postcode (if you are not registering as a school).']
+prev_signups['Not school'] = prev_signups['Not school'].str.replace(' ','')
+prev_signups['Not school'] = prev_signups['Not school'].str.replace('`','')
+prev_signups['Not school'] = prev_signups['Not school'].str.upper()
+Not_school_prev = prev_signups['Not school'].tolist()
+prev_signups = prev_signups['Postcode'].tolist()
+prev_signups = [prev_signups for prev_signups in prev_signups if str(prev_signups) != 'nan']
+Not_school_prev = [Not_school_prev for Not_school_prev in Not_school_prev if str(Not_school_prev) != 'nan']
+print(prev_signups)
+prev_signups = '|'.join(prev_signups)
+Not_school_prev = '|'.join(Not_school_prev)
+print(prev_signups)
+conditions = [
+    df['Postcode'].str.contains(prev_signups, na=False), 
+    df['Postcode'].str.contains(Not_school_prev, na=False)]
+choices = ['Yes', 'Yes']
+df['Prev_signups'] = np.select(conditions, choices, default='No')
+#except Exception as Argument:
+    #print(str(Argument))
+    #fail = 'True'
+    #print(str('Failed'))
 
 try:
     with pd.ExcelWriter(str(cwd) + "/output.xlsx",engine="xlsxwriter", mode='w', 
