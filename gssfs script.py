@@ -117,13 +117,9 @@ try:
     start_delta = datetime.timedelta(7)
     last_week = d0 - start_delta
     print(type(last_week))
-    #last_week = datetime.datetime.strptime(last_week, '%Y-%m-%d')
-    #last_week.strftime('%Y%m%d')
     print(last_week)
     last_week_df = df
     last_week_df['Date'] = last_week_df['Date'].dt.date
-    #last_week_df['Date'] = pd.to_datetime(last_week_df['Date'])
-    #last_week_df[(last_week_df['Date'] > last_week_df)]
     print(last_week_df.dtypes)
     res = last_week_df[~(last_week_df['Date'] > last_week)]
     weekly_signups = res["cum sum"].iloc[-1]
@@ -505,42 +501,36 @@ except Exception as Argument:
 try:
     column_names = ["First Name", "Last Name", "Email", "Date", "Time", "Recruitment method", "Previous participant", "Students", "cum sum", "Organisation", 'Original_postcode', "Postcode", "Region", "LA", "GSSfS newsletter", "SEERIH newsletter", "Deprivation rating", 'MPM distribution', "Education rating", "IDACI", "IDACI %", "lsoa", "ladcd"]
     df = df.reindex(columns=column_names)
-    #df['Date'] = pd.to_datetime(df['Date'], format='%Y%m%d')
-    #df['Date'] = pd.to_datetime(df['Date']).dt.date
-    #df['Date'] = df['Date'].apply(lambda x: xlrd.xldate.xldate_as_datetime(x, 0))
     df.fillna(str("NA"))
 except Exception as Argument:
     print(str(Argument))
     fail = 'True'
 
-#try:
-prev_signups = pd.read_excel(str(cwd) + "/2020 signup data.xlsx")
-prev_signups['Postcode'] = prev_signups['Postcode'].str.replace(' ','')
-prev_signups['Postcode'] = prev_signups['Postcode'].str.replace('`','')
-prev_signups['Postcode'] = prev_signups['Postcode'].str.upper()
-prev_signups.dropna(how ='any')
-prev_signups['Not school'] = prev_signups['Postcode (if you are not registering as a school).']
-prev_signups['Not school'] = prev_signups['Not school'].str.replace(' ','')
-#prev_signups['Not school'] = prev_signups['Not school'].str.replace('', '')
-prev_signups['Not school'] = prev_signups['Not school'].str.replace('`','')
-prev_signups['Not school'] = prev_signups['Not school'].str.upper()
-Not_school_prev = prev_signups['Not school'].tolist()
-prev_signups = prev_signups['Postcode'].tolist()
-prev_signups = [prev_signups for prev_signups in prev_signups if str(prev_signups) != 'nan']
-Not_school_prev = [Not_school_prev for Not_school_prev in Not_school_prev if str(Not_school_prev) != 'nan']
-#prev_signups= re.sub(r'[\W_]+', '', prev_signups)
-#Not_school_prev = re.sub(r'[\W_]+', '', Not_school_prev)
-prev_signups = '|'.join(prev_signups)
-Not_school_prev = '|'.join(Not_school_prev)
-conditions = [
-    df['Postcode'].str.contains(prev_signups, na=False), 
-    df['Postcode'].str.contains(Not_school_prev, na=False)]
-choices = ['Yes', 'Yes']
-df['Prev_signups'] = np.select(conditions, choices, default='No')
-#except Exception as Argument:
-    #print(str(Argument))
-    #fail = 'True'
-    #print(str('Failed'))
+try:
+    prev_signups = pd.read_excel(str(cwd) + "/2020 signup data.xlsx")
+    prev_signups['Postcode'] = prev_signups['Postcode'].str.replace(' ','')
+    prev_signups['Postcode'] = prev_signups['Postcode'].str.replace('`','')
+    prev_signups['Postcode'] = prev_signups['Postcode'].str.upper()
+    prev_signups.dropna(how ='any')
+    prev_signups['Not school'] = prev_signups['Postcode (if you are not registering as a school).']
+    prev_signups['Not school'] = prev_signups['Not school'].str.replace(' ','')
+    prev_signups['Not school'] = prev_signups['Not school'].str.replace('`','')
+    prev_signups['Not school'] = prev_signups['Not school'].str.upper()
+    Not_school_prev = prev_signups['Not school'].tolist()
+    prev_signups = prev_signups['Postcode'].tolist()
+    prev_signups = [prev_signups for prev_signups in prev_signups if str(prev_signups) != 'nan']
+    Not_school_prev = [Not_school_prev for Not_school_prev in Not_school_prev if str(Not_school_prev) != 'nan']
+    prev_signups = '|'.join(prev_signups)
+    Not_school_prev = '|'.join(Not_school_prev)
+    conditions = [
+        df['Postcode'].str.contains(prev_signups, na=False), 
+        df['Postcode'].str.contains(Not_school_prev, na=False)]
+    choices = ['Yes', 'Yes']
+    df['Prev_signups'] = np.select(conditions, choices, default='No')
+except Exception as Argument:
+    print(str(Argument))
+    fail = 'True'
+    print(str('Failed'))
 
 try:
     with pd.ExcelWriter(str(cwd) + "/output.xlsx",engine="xlsxwriter", mode='w', 
@@ -560,30 +550,33 @@ try:
 except Exception as Argument:
     print(str(Argument))
     fail = 'True'
+try:
+    conditions = [
+        Eng_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
+        Eng_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
+    choices = ['Yes', 'Yes']
+    Eng_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
 
-conditions = [
-    Eng_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
-    Eng_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
-choices = ['Yes', 'Yes']
-Eng_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
+    conditions = [
+        Scot_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
+        Scot_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
+    choices = ['Yes', 'Yes']
+    Scot_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
 
-conditions = [
-    Scot_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
-    Scot_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
-choices = ['Yes', 'Yes']
-Scot_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
+    conditions = [
+        Wales_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
+        Wales_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
+    choices = ['Yes', 'Yes']
+    Wales_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
 
-conditions = [
-    Wales_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
-    Wales_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
-choices = ['Yes', 'Yes']
-Wales_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
-
-conditions = [
-    NI_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
-    NI_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
-choices = ['Yes', 'Yes']
-NI_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
+    conditions = [
+        NI_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
+        NI_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
+    choices = ['Yes', 'Yes']
+    NI_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
+except Exception as Argument:
+    print(str(Argument))
+    fail = 'True'
 
 try: 
     with pd.ExcelWriter(str(cwd) + "/Regional Champion Data.xlsx",engine="xlsxwriter", mode='w', 
