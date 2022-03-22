@@ -534,8 +534,11 @@ except Exception as Argument:
 try:
     with pd.ExcelWriter(str(cwd) + "/output.xlsx",engine="xlsxwriter", mode='w', 
     datetime_format='mm-dd-yy hh:mm:ss', date_format='mmm-dd-yy') as writer:
-        df.to_excel(writer, sheet_name='Memberspace', index=False) 
+        df.to_excel(writer, sheet_name='Memberspace', index=False)
+
     with pd.ExcelWriter(str(cwd) + "/output.xlsx",engine="openpyxl", mode='a') as writer:
+        df = df[['First Name', 'Last Name', 'Email', 'Date', 'Previous participant', 'Organisation', 'Postcode', 'Region']]
+        df.to_excel(writer, sheet_name='Signups', index=False)
         target.to_excel(writer, sheet_name='Target Signups', index=False)
         Student_count.to_excel(writer, sheet_name='Student Count')
         Eng_school_list.to_excel(writer, sheet_name='Eng List', index=False)
@@ -546,17 +549,22 @@ try:
         Wales_schools_not_recruited.to_excel(writer, sheet_name='Wales Not recruited', index=False)
         NI_school_list.to_excel(writer, sheet_name='NI List', index=False)
         NI_schools_not_recruited.to_excel(writer, sheet_name='NI Not recruited', index=False)
+    #fields = ['First Name', 'Last Name', 'Email', 'Date', 'Previous participant', 'Organisation', 'Postcode', 'Region']
+    #df = pd.read_excel(str(cwd) + "/output.xlsx", 'Memberspace', usecols=fields)
+    #with pd.ExcelWriter(str(cwd) + "/output.xlsx",engine="openpyxl", mode='a', date_format='mmm-dd-yy') as writer:
+        #df.to_excel(writer, sheet_name='Signups', index=False)
     wb= px.load_workbook(str(cwd) + '/output.xlsx')
-    keep_sheets = ['Memberspace', 'Eng Not recruited', 'Scot Not recruited', 'Wales Not recruited', 'NI Not recruited']
+    keep_sheets = ['Signups', 'Eng Not recruited', 'Scot Not recruited', 'Wales Not recruited', 'NI Not recruited']
     for sheetName in wb.sheetnames:
         if sheetName in keep_sheets:
             wb[sheetName].auto_filter.ref = wb[sheetName].dimensions
             wb[sheetName].auto_filter.ref = wb[sheetName].dimensions
         else:
             del wb[sheetName]
+    wb.save(str(cwd) + '/output_regional.xlsx')
 except Exception as Argument:
     print(str(Argument))
     fail = 'True'
     print(str('Failed'))
-    
+
 done = 'True'
