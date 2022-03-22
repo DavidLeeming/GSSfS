@@ -43,7 +43,7 @@ try:
     # Rename columns
     df.columns = ["First Name", "Last Name", "Email", "Date", "Recruitment method", "Previous participant", "Students", "Organisation", "Postcode", "LA", "GSSfS newsletter", "SEERIH newsletter"]
     # Exclude team members by postcode
-    Postcodes_Exclude = ["WN4 9DS", "M16 0HR", "M24 1WH", "CV5 6AL", "M41 6PN"]
+    Postcodes_Exclude = ["WN4 9DS", "M16 0HR", "M24 1WH", "CV5 6AL", "M41 6PN", "EH25 9RG", "PE22 8RD", "KY11 8UU", "BS8 1PD", "CB22 4RP", "CF10 3DD", "CW2 5FY"]
     df = df[df.Postcode.isin(Postcodes_Exclude) == False]
     df['Original_postcode'] = df['Postcode']
     # Remove memberspace import artifacts
@@ -120,10 +120,11 @@ try:
     last_week_df['Date'] = last_week_df['Date'].dt.date
     print(last_week_df.dtypes)
     res = last_week_df[~(last_week_df['Date'] > last_week)]
+    print(res)
     weekly_signups = res["cum sum"].iloc[-1]
+    print(weekly_signups)
     weekly_signups = Current_students - weekly_signups 
     print(weekly_signups)
-    #weekly_signups = 
     students_per_day = (Target_students - Current_students) / days_left
     d = {'Target Signups': [Target_signups], 'Target Students': [Target_students], 'Current Signups': [Current_signups], 'Current Students': [Current_students], 'Students per day': [students_per_day], 'Weekly Signups': [weekly_signups]}
     target = pd.DataFrame(data=d)
@@ -223,7 +224,7 @@ try:
     Stoke = ['ST1', 'ST10', 'ST11', 'ST12', 'ST13', 'ST14', 'ST15', 'ST16', 'ST17', 'ST18', 'ST19', 'ST2', 'ST20', 'ST21', 'ST3', 'ST4', 'ST5', 'ST6', 'ST7', 'ST8', 'ST9']
     Stoke = '|'.join(Stoke)
     # List for Yorkshire
-    Bradford = ['BD1', 'BD10', 'BD11', 'BD12', 'BD13', 'BD14', 'BD15', 'B16', 'BD17', 'BD18', 'BD19', 'BD2', 'BD20', 'BD21', 'BD22', 'BD23', 'BD24', 'BD3', 'BD4', 'BD5', 'BD6', 'BD7', 'BD8', 'BD9']
+    Bradford = ['BD1', 'BD10', 'BD11', 'BD12', 'BD13', 'BD14', 'BD15', 'BD17', 'BD18', 'BD19', 'BD2', 'BD20', 'BD21', 'BD22', 'BD23', 'BD24', 'BD3', 'BD4', 'BD5', 'BD6', 'BD7', 'BD8', 'BD9']
     Halifax = ['HX1', 'HX2', 'HX3', 'HX4', 'HX5', 'HX6', 'HX7']
     Wakefield = ['WF1', 'WF10', 'WF11', 'WF12', 'WF13', 'WF14', 'WF15', 'WF16', 'WF17', 'WF2', 'WF3', 'WF4', 'WF5', 'WF6', 'WF7', 'WF8', 'WF9']
     Leeds = ['LS1', 'LS10', 'LS11', 'LS12', 'LS13', 'LS14', 'LS15', 'LS16', 'LS17', 'LS18', 'LS19', 'LS2', 'LS20', 'LS21', 'LS22', 'LS23', 'LS24', 'LS25', 'LS26', 'LS27', 'LS28', 'LS29', 'LS3', 'LS4', 'LS5', 
