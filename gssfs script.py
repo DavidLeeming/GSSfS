@@ -546,63 +546,12 @@ try:
         Wales_schools_not_recruited.to_excel(writer, sheet_name='Wales Not recruited', index=False)
         NI_school_list.to_excel(writer, sheet_name='NI List', index=False)
         NI_schools_not_recruited.to_excel(writer, sheet_name='NI Not recruited', index=False)
-except Exception as Argument:
-    print(str(Argument))
-    fail = 'True'
-try:
-    conditions = [
-        Eng_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
-        Eng_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
-    choices = ['Yes', 'Yes']
-    Eng_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
-
-    conditions = [
-        Scot_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
-        Scot_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
-    choices = ['Yes', 'Yes']
-    Scot_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
-
-    conditions = [
-        Wales_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
-        Wales_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
-    choices = ['Yes', 'Yes']
-    Wales_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
-
-    conditions = [
-        NI_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
-        NI_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
-    choices = ['Yes', 'Yes']
-    NI_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
-except Exception as Argument:
-    print(str(Argument))
-    fail = 'True'
-
-try: 
-    with pd.ExcelWriter(str(cwd) + "/Regional Champion Data.xlsx",engine="xlsxwriter", mode='w', 
-    datetime_format='mm-dd-yy hh:mm:ss', date_format='mmm-dd-yy') as writer:
-        Eng_school_list.to_excel(writer, sheet_name='Eng List', index=False) 
-    with pd.ExcelWriter(str(cwd) + "//Regional Champion Data.xlsx",engine="openpyxl", mode='a') as writer:
-        Eng_schools_not_recruited.to_excel(writer, sheet_name='Eng Not recruited', index=False)
-        Scot_school_list.to_excel(writer, sheet_name='Scot List', index=False)
-        Scot_schools_not_recruited.to_excel(writer, sheet_name='Scot Not recruited', index=False)
-        Wales_school_list.to_excel(writer, sheet_name='Wales List', index=False)
-        Wales_schools_not_recruited.to_excel(writer, sheet_name='Wales Not recruited', index=False)
-        NI_school_list.to_excel(writer, sheet_name='NI List', index=False)
-        NI_schools_not_recruited.to_excel(writer, sheet_name='NI Not recruited', index=False)
-    wb= px.load_workbook(str(cwd) + '/Regional Champion Data.xlsx')
-    ws = wb["Eng Not recruited"]
-    ws.auto_filter.ref = ws.dimensions
-    ws = wb["Eng List"]
-    ws.auto_filter.ref = ws.dimensions
-    ws = wb["Wales Not recruited"]
-    ws.auto_filter.ref = ws.dimensions
-    ws = wb["NI Not recruited"]
-    ws.auto_filter.ref = ws.dimensions
-    ws = wb["Scot Not recruited"]
-    ws.auto_filter.ref = ws.dimensions
-    wb.save(str(cwd) + '/Regional Champion Data.xlsx')
-except Exception as Argument:
-    print(str(Argument))
-    fail = 'True'
-
+    wb= px.load_workbook(str(cwd) + '/output.xlsx')
+    keep_sheets = ['Memberspace', 'Eng Not recruited', 'Scot Not recruited', 'Wales Not recruited', 'NI Not recruited']
+    for sheetName in wb.sheetnames:
+        if sheetName in keep_sheets:
+            wb[sheetName].auto_filter.ref = wb[sheetName].dimensions
+            wb[sheetName].auto_filter.ref = wb[sheetName].dimensions
+        else:
+            del wb[sheetName]
 done = 'True'
