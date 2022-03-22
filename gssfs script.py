@@ -554,4 +554,9 @@ try:
             wb[sheetName].auto_filter.ref = wb[sheetName].dimensions
         else:
             del wb[sheetName]
+except Exception as Argument:
+    print(str(Argument))
+    fail = 'True'
+    print(str('Failed'))
+    
 done = 'True'
