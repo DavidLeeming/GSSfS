@@ -36,10 +36,7 @@ try:
     false = df[(df['Test'] == 'NA')].index 
     df.drop(false , inplace=True)
     df = df.reset_index(drop=True)
-    print(df)
-
-
-    
+    print(df)  
 
 except Exception as Argument:
     print(str(Argument))
