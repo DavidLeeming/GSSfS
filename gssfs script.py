@@ -1,6 +1,4 @@
-import datetime, pandas as pd, numpy as np, itertools, threading, time, sys, pathlib, openpyxl, xlrd
-import regex as re
-from pathlib import Path
+import datetime, pandas as pd, numpy as np, itertools, threading, time, sys
 import win32com.client as win32
 import openpyxl as px
 from datetime import date, timedelta
