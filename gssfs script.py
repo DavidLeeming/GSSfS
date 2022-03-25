@@ -43,7 +43,7 @@ try:
     # Rename columns
     df.columns = ["First Name", "Last Name", "Email", "Date", "Recruitment method", "Previous participant", "Students", "Organisation", "Postcode", "LA", "GSSfS newsletter", "SEERIH newsletter"]
     # Exclude team members by postcode
-    Postcodes_Exclude = ["WN4 9DS", "M16 0HR", "M24 1WH", "CV5 6AL", "M41 6PN", "EH25 9RG", "PE22 8RD", "KY11 8UU", "BS8 1PD", "CB22 4RP", "CF10 3DD", "CW2 5FY"]
+    Postcodes_Exclude = ["WN4 9DS", "M16 0HR", "M24 1WH", "CV5 6AL", "M41 6PN", "EH25 9RG", "KY11 8UU", "BS8 1PD", "CB22 4RP", "CF10 3DD", "CW2 5FY"]
     df = df[df.Postcode.isin(Postcodes_Exclude) == False]
     df['Original_postcode'] = df['Postcode']
     # Remove memberspace import artifacts
@@ -549,10 +549,6 @@ try:
         Wales_schools_not_recruited.to_excel(writer, sheet_name='Wales Not recruited', index=False)
         NI_school_list.to_excel(writer, sheet_name='NI List', index=False)
         NI_schools_not_recruited.to_excel(writer, sheet_name='NI Not recruited', index=False)
-    #fields = ['First Name', 'Last Name', 'Email', 'Date', 'Previous participant', 'Organisation', 'Postcode', 'Region']
-    #df = pd.read_excel(str(cwd) + "/output.xlsx", 'Memberspace', usecols=fields)
-    #with pd.ExcelWriter(str(cwd) + "/output.xlsx",engine="openpyxl", mode='a', date_format='mmm-dd-yy') as writer:
-        #df.to_excel(writer, sheet_name='Signups', index=False)
     wb= px.load_workbook(str(cwd) + '/output.xlsx')
     keep_sheets = ['Signups', 'Eng Not recruited', 'Scot Not recruited', 'Wales Not recruited', 'NI Not recruited']
     for sheetName in wb.sheetnames:
