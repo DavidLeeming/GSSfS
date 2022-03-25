@@ -526,6 +526,33 @@ try:
         df['Postcode'].str.contains(Not_school_prev, na=False)]
     choices = ['Yes', 'Yes']
     df['Prev_signups'] = np.select(conditions, choices, default='No')
+
+    conditions = [
+        Eng_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
+        Eng_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
+    choices = ['Yes', 'Yes']
+    Eng_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
+
+    conditions = [
+        Scot_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
+        Scot_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
+    choices = ['Yes', 'Yes']
+    Scot_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
+
+    conditions = [
+        Wales_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
+        Wales_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
+    choices = ['Yes', 'Yes']
+    Wales_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
+
+    conditions = [
+        NI_schools_not_recruited['Postcode'].str.contains(prev_signups, na=False), 
+        NI_schools_not_recruited['Postcode'].str.contains(Not_school_prev, na=False)]
+    choices = ['Yes', 'Yes']
+    NI_schools_not_recruited['Prev_signups'] = np.select(conditions, choices, default='No')
+    executionTime = (time.time() - startTime)
+    executionTime = round(executionTime, 1)
+    print(str(executionTime))
 except Exception as Argument:
     print(str(Argument))
     fail = 'True'
@@ -537,7 +564,13 @@ try:
         df.to_excel(writer, sheet_name='Memberspace', index=False)
 
     with pd.ExcelWriter(str(cwd) + "/output.xlsx",engine="openpyxl", mode='a') as writer:
-        df = df[['First Name', 'Last Name', 'Email', 'Date', 'Previous participant', 'Organisation', 'Postcode', 'Region']]
+        df = df[['Organisation', 'Postcode', 'Region', 'Previous participant']]
+        #dfs = [df, target, Student_count, Eng_school_list, Eng_schools_not_recruited, Scot_school_list,
+        #Scot_schools_not_recruited, Wales_school_list, Wales_schools_not_recruited, NI_school_list, NI_schools_not_recruited]
+        #sheet_titles = ['Signups', 'Target Signups', 'Student Count', 'Eng List', 'Eng Not recruited', 'Scot List', 
+        #'Scot Not recruited', 'Wales List', 'Wales Not recruited', 'NI List', 'NI Not recruited']
+        #for data_frame in dfs:
+            #data_frame.to_excel(writer, index=False)
         df.to_excel(writer, sheet_name='Signups', index=False)
         target.to_excel(writer, sheet_name='Target Signups', index=False)
         Student_count.to_excel(writer, sheet_name='Student Count')
@@ -549,7 +582,11 @@ try:
         Wales_schools_not_recruited.to_excel(writer, sheet_name='Wales Not recruited', index=False)
         NI_school_list.to_excel(writer, sheet_name='NI List', index=False)
         NI_schools_not_recruited.to_excel(writer, sheet_name='NI Not recruited', index=False)
+        executionTime = (time.time() - startTime)
+        executionTime = round(executionTime, 1)
+        print(str(executionTime))
     wb= px.load_workbook(str(cwd) + '/output.xlsx')
+
     keep_sheets = ['Signups', 'Eng Not recruited', 'Scot Not recruited', 'Wales Not recruited', 'NI Not recruited']
     for sheetName in wb.sheetnames:
         if sheetName in keep_sheets:
