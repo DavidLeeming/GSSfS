@@ -586,7 +586,6 @@ try:
         executionTime = round(executionTime, 1)
         print(str(executionTime))
     wb= px.load_workbook(str(cwd) + '/output.xlsx')
-
     keep_sheets = ['Signups', 'Eng Not recruited', 'Scot Not recruited', 'Wales Not recruited', 'NI Not recruited']
     for sheetName in wb.sheetnames:
         if sheetName in keep_sheets:
@@ -595,6 +594,19 @@ try:
         else:
             del wb[sheetName]
     wb.save(str(cwd) + '/output_regional.xlsx')
+
+    wb= px.load_workbook(str(cwd) + '/output.xlsx')
+    keep_sheets = ['Memberspace']
+    for sheetName in wb.sheetnames:
+        if sheetName in keep_sheets:
+            wb[sheetName].delete_cols(17, 10)
+            wb[sheetName].delete_cols(14, 1)
+            wb[sheetName].delete_cols(4, 8)          
+            wb[sheetName].auto_filter.ref = wb[sheetName].dimensions
+            wb[sheetName].auto_filter.ref = wb[sheetName].dimensions
+        else:
+            del wb[sheetName]
+    wb.save(str(cwd) + '/newsletter.xlsx')
 except Exception as Argument:
     print(str(Argument))
     fail = 'True'
