@@ -1,10 +1,10 @@
-import pandas as pd, numpy as np, sys
+import pandas as pd, numpy as np, sys, openpyxl as px
+
 cwd = (str(sys.argv[0][:-25]))
 print(cwd)
 
 try:
-    fields = ["Organisation", "Postcode"]
-    df = pd.read_excel(str(cwd) + "/output.xlsx", sheet_name='Memberspace', usecols=fields)
+    df = pd.read_excel(str(cwd) + "/newsletter.xlsx")
 except Exception as Argument:
     print(str(Argument))
 
@@ -37,6 +37,12 @@ try:
     df.drop(false , inplace=True)
     df = df.reset_index(drop=True)
     print(df)  
+    with pd.ExcelWriter(str(cwd) + "/newsletter.xlsx",engine="openpyxl", mode='a') as writer:
+        df.to_excel(writer, sheet_name='BS&BA', index=False)
+
+    wb= px.load_workbook(str(cwd) + '/newsletter.xlsx')
+    wb['BS&BA'].auto_filter.ref = wb['BS&BA'].dimensions
+    wb.save(str(cwd) + '/newsletter.xlsx')
 
 except Exception as Argument:
     print(str(Argument))
